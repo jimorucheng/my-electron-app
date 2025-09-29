@@ -1,6 +1,6 @@
 {
   "name": "my-electron-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My Electron App",
   "main": "main.js",
   "author": "juntao.guo",
@@ -41,21 +41,27 @@
         },
         {
           "name": "@electron-forge/maker-zip",
-          "platforms": ["darwin"]
+          "platforms": [
+            "darwin"
+          ]
         },
         {
           "name": "@electron-forge/maker-deb",
           "config": {
             "options": {}
           },
-          "platforms": ["linux"]
+          "platforms": [
+            "linux"
+          ]
         },
         {
           "name": "@electron-forge/maker-rpm",
           "config": {
             "options": {}
           },
-          "platforms": ["linux"]
+          "platforms": [
+            "linux"
+          ]
         }
       ]
     }
