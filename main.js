@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 
-app.name = "院内力学矫正系统";
+app.name = "院内矫形系统";
 
 function createWindow() {
   const win = new BrowserWindow({
