@@ -6,7 +6,7 @@ module.exports = {
   packagerConfig: {
     asar: true,
     name: "ais-mechanical-orthopedic-desktop-app", // Windows/Linux 实际生成 exe 名称，英文
-    productName: "院内力学矫正系统", // macOS Dock 显示中文
+    productName: "院内矫形系统", // macOS Dock 显示中文
     executableName: "ais-mechanical-orthopedic-desktop-app", // Linux/Windows 真正的二进制文件名
     icon: path.resolve(__dirname, "assets/icon"), // 👈 不要写扩展名！
     overwrite: true,
@@ -18,7 +18,7 @@ module.exports = {
       config: {
         name: "ais-mechanical-orthopedic-desktop-app", // Squirrel 找的 exe 名称，必须和 executableName 一致
         setupIcon: path.resolve(__dirname, "assets/icon.ico"), // 👈 Windows 安装包图标
-        setupExe: "院内力学矫正系统.exe", // 安装程序名称，可中文
+        setupExe: "院内矫形系统.exe", // 安装程序名称，可中文
       },
     },
     {
