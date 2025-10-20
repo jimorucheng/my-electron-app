@@ -1,25 +1,21 @@
+const path = require("path");
 const { FusesPlugin } = require("@electron-forge/plugin-fuses");
 const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 
 module.exports = {
   packagerConfig: {
     asar: true,
-    // osxSign: {
-    //   identity: null,
-    //   entitlements: null,
-    // },
-    // osxNotarize: {
-    //   tool: "notarytool",
-    //   appleId: process.env.APPLE_ID,
-    //   appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    //   teamId: process.env.APPLE_TEAM_ID,
-    // },
+    icon: path.resolve(__dirname, "assets/icon"), // 👈 不要写扩展名！
   },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+       config: {
+        name: "my_electron_app",
+        setupIcon: path.resolve(__dirname, "assets/icon.ico"), // 👈 Windows 安装包图标
+        shortcutName: "My Electron App",
+      },
     },
     {
       name: "@electron-forge/maker-zip",
@@ -27,11 +23,19 @@ module.exports = {
     },
     {
       name: "@electron-forge/maker-deb",
-      config: {},
+      config: {
+        options: {
+          icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
+        },
+      },
     },
     {
       name: "@electron-forge/maker-rpm",
-      config: {},
+      config: {
+        options: {
+          icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
+        },
+      },
     },
   ],
   plugins: [
