@@ -17,7 +17,6 @@ module.exports = {
       config: {
         name: "my_electron_app",
         setupIcon: path.resolve(__dirname, "assets/icon.ico"), // 👈 Windows 安装包图标
-        shortcutName: "院内力学矫正系统",
       },
     },
     {
