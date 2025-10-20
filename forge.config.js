@@ -28,6 +28,7 @@ module.exports = {
       config: {
         options: {
           icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
+          executableName: "院内力学矫正系统" // ✅ 与 packager name 一致
         },
       },
     },
@@ -36,6 +37,7 @@ module.exports = {
       config: {
         options: {
           icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
+          executableName: "院内力学矫正系统" // ✅ 与 packager name 一致
         },
       },
     },
