@@ -7,6 +7,7 @@ module.exports = {
     asar: true,
     name: "院内力学矫正系统", // ✅ 影响 macOS Info.plist
     icon: path.resolve(__dirname, "assets/icon"), // 👈 不要写扩展名！
+    executableName: "ais-mechanical-orthopedic-desktop-app", // Linux/Windows 真正的二进制文件名
     overwrite: true,
   },
   rebuildConfig: {},
@@ -28,7 +29,6 @@ module.exports = {
       config: {
         options: {
           icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
-          executableName: "院内力学矫正系统" // ✅ 与 packager name 一致
         },
       },
     },
@@ -37,7 +37,6 @@ module.exports = {
       config: {
         options: {
           icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
-          executableName: "院内力学矫正系统" // ✅ 与 packager name 一致
         },
       },
     },
