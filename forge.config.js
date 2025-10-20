@@ -5,16 +5,17 @@ const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 module.exports = {
   packagerConfig: {
     asar: true,
+    name: "院内力学矫正系统", // ✅ 影响 macOS Info.plist
     icon: path.resolve(__dirname, "assets/icon"), // 👈 不要写扩展名！
   },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-       config: {
+      config: {
         name: "my_electron_app",
         setupIcon: path.resolve(__dirname, "assets/icon.ico"), // 👈 Windows 安装包图标
-        shortcutName: "My Electron App",
+        shortcutName: "院内力学矫正系统",
       },
     },
     {
