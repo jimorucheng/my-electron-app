@@ -7,6 +7,7 @@ module.exports = {
     asar: true,
     name: "院内力学矫正系统", // ✅ 影响 macOS Info.plist
     icon: path.resolve(__dirname, "assets/icon"), // 👈 不要写扩展名！
+    overwrite: true,
   },
   rebuildConfig: {},
   makers: [

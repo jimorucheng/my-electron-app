@@ -1,7 +1,7 @@
 {
-  "name": "my-electron-app",
-  "version": "1.0.5",
-  "description": "My Electron App",
+  "name": "ais-mechanical-orthopedic-desktop-app",
+  "version": "1.0.6",
+  "description": "AIS Mechanical Orthopedic Desktop App",
   "main": "main.js",
   "author": "juntao.guo",
   "license": "MIT",
@@ -28,42 +28,5 @@
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
     "update-electron-app": "^3.0.0"
-  },
-  "config": {
-    "forge": {
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "my_electron_app",
-            "shortcutName": "My Electron App"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {
-            "options": {}
-          },
-          "platforms": [
-            "linux"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {
-            "options": {}
-          },
-          "platforms": [
-            "linux"
-          ]
-        }
-      ]
-    }
   }
 }
