@@ -23,7 +23,7 @@ module.exports = {
     // },
     {
       name: "@electron-forge/maker-zip",
-      platforms: ["win64"], // ✅ 直接打 zip 包，不安装
+      platforms: ["win32"], // ✅ 直接打 zip 包，不安装
     },
     // {
     //   name: "@electron-forge/maker-zip",

@@ -7,28 +7,28 @@ on:
       - "v*.*.*"
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # build-macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+  #     - name: Install dependencies
+  #       run: npm install
 
-      - name: Make macOS dmg/zip
-        run: npm run make -- --platform=darwin --arch=x64
+  #     - name: Make macOS dmg/zip
+  #       run: npm run make -- --platform=darwin --arch=x64
 
-      - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-artifacts
-          path: out/make/**
+  #     - name: Upload macOS artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: macos-artifacts
+  #         path: out/make/**
 
   build-windows:
     runs-on: windows-latest
@@ -53,35 +53,37 @@ jobs:
           name: windows-artifacts
           path: out/make/**
 
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # build-linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rpm fakeroot
-          npm install
+  #     - name: Install dependencies
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y rpm fakeroot
+  #         npm install
 
-      - name: Make Linux deb/rpm
-        run: npm run make -- --platform=linux --arch=x64
+  #     - name: Make Linux deb/rpm
+  #       run: npm run make -- --platform=linux --arch=x64
 
-      - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-artifacts
-          path: out/make/**
+  #     - name: Upload Linux artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: linux-artifacts
+  #         path: out/make/**
+
+  # needs: [build-macos, build-windows, build-linux]
 
   release:
     runs-on: ubuntu-latest
-    needs: [build-macos, build-windows, build-linux]
+    needs: [build-windows]
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
