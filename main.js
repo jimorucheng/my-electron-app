@@ -5,10 +5,12 @@ app.name = "院内矫形系统";
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1000,
-    height: 700,
+    width: 1920, // 可以先设置个默认宽高
+    height: 1080,
+    show: false, // 👈 初始隐藏窗口，等内容加载完再显示
     icon: path.join(__dirname, "assets", "icon.png"), // 👈 添加这一行
     autoHideMenuBar: true, // Windows/Linux 自动隐藏菜单栏
+    fullscreen: true, // ✅ 启动即全屏显示
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false, // 推荐安全默认
@@ -18,8 +20,12 @@ function createWindow() {
   });
 
   win.loadFile("index.html");
-}
 
+  // ✅ 等待 WebView 加载完再显示窗口
+  win.once("ready-to-show", () => {
+    win.show();
+  });
+}
 
 app.whenReady().then(() => {
   createWindow();

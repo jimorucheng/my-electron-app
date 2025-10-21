@@ -21,26 +21,26 @@ module.exports = {
         setupExe: "院内矫形系统.exe", // 安装程序名称，可中文
       },
     },
-    {
-      name: "@electron-forge/maker-zip",
-      platforms: ["darwin"], // macOS zip 包
-    },
-    {
-      name: "@electron-forge/maker-deb",
-      config: {
-        options: {
-          icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
-        },
-      },
-    },
-    {
-      name: "@electron-forge/maker-rpm",
-      config: {
-        options: {
-          icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
-        },
-      },
-    },
+    // {
+    //   name: "@electron-forge/maker-zip",
+    //   platforms: ["darwin"], // macOS zip 包
+    // },
+    // {
+    //   name: "@electron-forge/maker-deb",
+    //   config: {
+    //     options: {
+    //       icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "@electron-forge/maker-rpm",
+    //   config: {
+    //     options: {
+    //       icon: path.resolve(__dirname, "assets/icon.png"), // 👈 Linux 图标
+    //     },
+    //   },
+    // },
   ],
   plugins: [
     {
