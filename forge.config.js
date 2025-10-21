@@ -24,6 +24,9 @@ module.exports = {
     {
       name: "@electron-forge/maker-zip",
       platforms: ["win32"], // ✅ 直接打 zip 包，不安装
+      config: {
+        name: "院内矫形系统", // ✅ zip 输出中文名
+      },
     },
     // {
     //   name: "@electron-forge/maker-zip",
