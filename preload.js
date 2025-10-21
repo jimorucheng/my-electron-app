@@ -1,5 +1,6 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  ping: () => console.log("ping from preload 🚀")
+  ping: () => console.log("Electron preload ready"),
+  webviewReady: () => ipcRenderer.send("webview-ready"),
 });

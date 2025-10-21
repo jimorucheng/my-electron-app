@@ -1,9 +1,9 @@
 {
   "name": "ais-mechanical-orthopedic-desktop-app",
-  "version": "1.0.19",
-  "description": "AIS Mechanical Orthopedic Desktop App",
+  "version": "1.0.20",
+  "description": "院内矫形系统",
   "main": "main.js",
-  "author": "juntao.guo",
+  "author": "中电药明数据科技（成都）有限公司",
   "license": "MIT",
   "scripts": {
     "start": "electron-forge start",

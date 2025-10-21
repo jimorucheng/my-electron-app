@@ -4,26 +4,27 @@
     <meta charset="UTF-8" />
     <title>院内矫形系统</title>
     <style>
-      body,
-      html {
+      html, body {
         margin: 0;
+        padding: 0;
         height: 100%;
         width: 100%;
+        background: #ffffff; /* ✅ 防止闪烁 */
       }
       #myWebview {
         width: 100%;
         height: 100%;
         border: none;
+        background: #ffffff;
       }
     </style>
   </head>
   <body>
-    <!-- Webview 加载网页 -->
-    <!-- src="http://hospital-orthopedic-test.local.cwdata.com/home" -->
     <webview
       id="myWebview"
       src="http://hospital-orthopedic-test.local.cwdata.com/home"
       allowpopups
+      style="background:#fff"
     ></webview>
 
     <script>
@@ -31,8 +32,10 @@
 
       const webview = document.getElementById("myWebview");
 
+      // ✅ 等 webview 加载完成后再显示主窗口
       webview.addEventListener("did-finish-load", () => {
         console.log("✅ Webview loaded:", webview.getURL());
+        window.electronAPI.webviewReady();
       });
     </script>
   </body>

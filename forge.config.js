@@ -13,13 +13,17 @@ module.exports = {
   },
   rebuildConfig: {},
   makers: [
+    // {
+    //   name: "@electron-forge/maker-squirrel",
+    //   config: {
+    //     name: "ais-mechanical-orthopedic-desktop-app", // Squirrel 找的 exe 名称，必须和 executableName 一致
+    //     setupIcon: path.resolve(__dirname, "assets/icon.ico"), // 👈 Windows 安装包图标
+    //     setupExe: "院内矫形系统.exe", // 安装程序名称，可中文
+    //   },
+    // },
     {
-      name: "@electron-forge/maker-squirrel",
-      config: {
-        name: "ais-mechanical-orthopedic-desktop-app", // Squirrel 找的 exe 名称，必须和 executableName 一致
-        setupIcon: path.resolve(__dirname, "assets/icon.ico"), // 👈 Windows 安装包图标
-        setupExe: "院内矫形系统.exe", // 安装程序名称，可中文
-      },
+      name: "@electron-forge/maker-zip",
+      platforms: ["win64"], // ✅ 直接打 zip 包，不安装
     },
     // {
     //   name: "@electron-forge/maker-zip",
