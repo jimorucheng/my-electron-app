@@ -33,17 +33,17 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
   console.log(`应用名称: ${app.name}`); // ✅ 输出应用名称
-  const menu = Menu.buildFromTemplate([
-    {
-      label: app.name, // ✅ 菜单栏显示的应用名
-      submenu: [
-        { label: `关于 ${app.name}`, role: "about" },
-        { type: "separator" },
-        { label: "退出", role: "quit" },
-      ],
-    },
-  ]);
-  Menu.setApplicationMenu(menu);
+  // const menu = Menu.buildFromTemplate([
+  //   {
+  //     label: app.name, // ✅ 菜单栏显示的应用名
+  //     submenu: [
+  //       { label: `关于 ${app.name}`, role: "about" },
+  //       { type: "separator" },
+  //       { label: "退出", role: "quit" },
+  //     ],
+  //   },
+  // ]);
+  Menu.setApplicationMenu(null); // Windows/Linux 隐藏菜单栏
 
   app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
