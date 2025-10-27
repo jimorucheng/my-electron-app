@@ -9,6 +9,7 @@ function createWindow() {
     height: 1080,
     show: false, // 👈 初始隐藏窗口，等内容加载完再显示
     icon: path.join(__dirname, "assets", "icon.png"), // 👈 添加这一行
+    
     autoHideMenuBar: true, // Windows/Linux 自动隐藏菜单栏
     backgroundColor: "#ffffff", // ✅ 避免出现绿色闪烁
     webPreferences: {
@@ -26,6 +27,7 @@ function createWindow() {
   ipcMain.on("webview-ready", () => {
     if (win && !win.isVisible()) {
       win.show();
+      win.setFullScreen(true); // 👈 启动时全屏显示
     }
   });
 }
