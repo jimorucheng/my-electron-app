@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <title></title>
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         height: 100%;
@@ -21,11 +22,12 @@
   </head>
   <body>
     <!-- src="http://10.30.10.3:5174/orthopedic" -->
+    <!-- src="https://test.cwdata.com/orthopedic/home" -->
     <webview
       id="myWebview"
       src="https://test.cwdata.com/orthopedic/home"
       allowpopups
-      style="background:#fff"
+      style="background: #fff"
     ></webview>
 
     <script>
@@ -37,6 +39,14 @@
       webview.addEventListener("did-finish-load", () => {
         console.log("✅ Webview loaded:", webview.getURL());
         window.electronAPI.webviewReady();
+      });
+
+      webview.addEventListener("ipc-message", (event) => {
+        console.log("📩 收到来自 webview 的消息：", event.channel);
+        if (event.channel === "exit-app") {
+          console.log("收到退出指令，正在关闭程序...");
+          window.electronAPI.exitApp(); // 调用主进程退出
+        }
       });
     </script>
   </body>
