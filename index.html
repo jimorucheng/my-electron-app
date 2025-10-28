@@ -35,17 +35,25 @@
 
       const webview = document.getElementById("myWebview");
 
-      // ✅ 等 webview 加载完成后再显示主窗口
+      window.electronAPI.ping();
+
       webview.addEventListener("did-finish-load", () => {
         console.log("✅ Webview loaded:", webview.getURL());
         window.electronAPI.webviewReady();
+
+        // ✅ 向 webview 注入全局退出函数
+        webview.executeJavaScript(`
+      window.exitApp = () => {
+        window.postMessage({ type: "exit-app" }, "*");
+      };
+    `);
       });
 
-      webview.addEventListener("ipc-message", (event) => {
-        console.log("📩 收到来自 webview 的消息：", event.channel);
-        if (event.channel === "exit-app") {
-          console.log("收到退出指令，正在关闭程序...");
-          window.electronAPI.exitApp(); // 调用主进程退出
+      // ✅ 接收来自 webview 页面发送的退出消息
+      window.addEventListener("message", (event) => {
+        if (event.data?.type === "exit-app") {
+          console.log("📩 收到退出指令，准备退出应用...");
+          window.electronAPI.exitApp();
         }
       });
     </script>

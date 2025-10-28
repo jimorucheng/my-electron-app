@@ -39,6 +39,7 @@ if (!gotTheLock) {
     });
 
     ipcMain.on("exit-app", () => {
+      console.log("🔴 received exit-app in main")
       console.log("🔚 收到退出指令，准备退出应用...");
       if (process.platform === "darwin") {
         app.exit(0);
