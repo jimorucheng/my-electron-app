@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
 app.name = "院内矫形系统";
@@ -10,71 +10,41 @@ if (!gotTheLock) {
   // 如果已有实例在运行，则直接退出当前进程
   app.quit();
 } else {
-  let win;
+  let mainWindow;
 
   function createWindow() {
-    win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
       width: 1920,
       height: 1080,
-      show: false,
-      icon: path.join(__dirname, "assets", "icon.png"),
-      autoHideMenuBar: true,
-      backgroundColor: "#ffffff",
+      frame: false,
+      fullscreen: true,
       webPreferences: {
-        preload: path.join(__dirname, "preload.js"),
+        // 注意：无需开启nodeIntegration和contextIsolation（更安全）
+        preload: path.join(__dirname, "preload.js"), // 新增preload脚本
         nodeIntegration: false,
         contextIsolation: true,
-        webviewTag: true
+        webviewTag: true,
       },
     });
 
-    win.loadFile("index.html");
+    mainWindow.loadFile("index.html");
 
-    win.webContents.openDevTools()  // 打开主页面调试工具
+    mainWindow.webContents.openDevTools(); // 打开主页面调试工具
 
-    ipcMain.on("webview-ready", () => {
-      if (win && !win.isVisible()) {
-        win.show();
-        win.setFullScreen(true);
-      }
-    });
-
+    // 监听关闭窗口的指令
     ipcMain.on("close-window", () => {
-      if (win) {
-        win.close(); // 关闭窗口
-
-        // 如果需要关闭窗口后直接退出应用（macOs特有处理）
-        if(process.platform === 'darwin') {  // 判断系统是否为macOS
-          app.quit(); // 退出整个应用 （包括Dock栏图标）
-        }
-      }
+      mainWindow.close();
     });
 
-    win.on('closed',() => {
-      win = null
-    })
+    mainWindow.on("closed", () => {
+      mainWindow = null;
+    });
   }
-
-  app.whenReady().then(() => {
-    createWindow();
-    console.log(`应用名称: ${app.name}`);
-
-    Menu.setApplicationMenu(null);
-
-    app.on("activate", function () {
-      if (BrowserWindow.getAllWindows().length === 0) createWindow();
-    });
-  });
-
-  // ✅ 如果用户尝试再次打开程序，聚焦已有窗口
-  app.on("second-instance", () => {
-    if (win) {
-      if (win.isMinimized()) win.restore();
-      win.focus();
-    }
-  });
-
-  app.on("window-all-closed", function () {
+  app.whenReady().then(createWindow);
+  app.on("window-all-closed", () => {
     if (process.platform !== "darwin") app.quit();
+  });
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 }

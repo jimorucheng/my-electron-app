@@ -33,27 +33,26 @@
     ></webview>
 
     <script>
+        // 获取webview元素
+        const webview = document.querySelector('webview')
 
-      const webview = document.getElementById("myWebview");
+        // 监听加载成功
+        webview.addEventListener('did-finish-load', () => {
+            console.log('H5页面加载完成');
+        });
 
-      window.electronAPI.ping();
+        // 监听加载失败
+        webview.addEventListener('did-fail-load', (event, errorCode, errorDescription) => {
+            console.error('H5页面加载失败：', errorCode, errorDescription);
+        });
 
-      webview.addEventListener("did-finish-load", () => {
-        console.log("✅ H5页面加载完成:", webview.getURL());
-        window.electronAPI.webviewReady();
-      });
-
-      webview.addEventListener("did-fail-load", (event,errorCode,errorDescription) => {
-        console.log("H5页面加载失败:", errorDescription);
-      });
-
-      // ✅ 接收来自 webview 页面发送的退出消息
-      window.addEventListener("ipc-message", (event) => {
-        if (event.channel === "close-app") {
-          // 转发消息给主进程关闭窗口
-          window.electronAPI.closeWindow();
-        }
-      });
+        // 监听来自H5页面的消息
+        webview.addEventListener('ipc-message', (event) => {
+            if (event.channel === 'close-app') {
+                // 转发消息给主进程关闭窗口
+                window.electronAPI.closeWindow()
+            }
+        })
     </script>
   </body>
 </html>
