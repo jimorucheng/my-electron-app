@@ -25,36 +25,33 @@
     <!-- src="https://test.cwdata.com/orthopedic/home" -->
     <webview
       id="myWebview"
-      src="https://test.cwdata.com/orthopedic/home"
+      src="http://172.20.10.2:5174/orthopedic/home"
       allowpopups
       style="background: #fff"
       partition="nopersist"
+      preload="./preload.js"
     ></webview>
 
     <script>
-      window.electronAPI.ping();
 
       const webview = document.getElementById("myWebview");
 
       window.electronAPI.ping();
 
       webview.addEventListener("did-finish-load", () => {
-        console.log("✅ Webview loaded:", webview.getURL());
+        console.log("✅ H5页面加载完成:", webview.getURL());
         window.electronAPI.webviewReady();
+      });
 
-        // ✅ 向 webview 注入全局退出函数
-        webview.executeJavaScript(`
-      window.exitApp = () => {
-        window.postMessage({ type: "exit-app" }, "*");
-      };
-    `);
+      webview.addEventListener("did-fail-load", (event,errorCode,errorDescription) => {
+        console.log("H5页面加载失败:", errorDescription);
       });
 
       // ✅ 接收来自 webview 页面发送的退出消息
-      window.addEventListener("message", (event) => {
-        if (event.data?.type === "exit-app") {
-          console.log("📩 收到退出指令，准备退出应用...");
-          window.electronAPI.exitApp();
+      window.addEventListener("ipc-message", (event) => {
+        if (event.channel === "close-app") {
+          // 转发消息给主进程关闭窗口
+          window.electronAPI.closeWindow();
         }
       });
     </script>

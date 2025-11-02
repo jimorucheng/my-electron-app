@@ -24,12 +24,13 @@ if (!gotTheLock) {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: false,
         contextIsolation: true,
-        webviewTag: true,
-        devTools: false,
+        webviewTag: true
       },
     });
 
     win.loadFile("index.html");
+
+    win.webContents.openDevTools()  // 打开主页面调试工具
 
     ipcMain.on("webview-ready", () => {
       if (win && !win.isVisible()) {
@@ -38,15 +39,20 @@ if (!gotTheLock) {
       }
     });
 
-    ipcMain.on("exit-app", () => {
-      console.log("🔴 received exit-app in main")
-      console.log("🔚 收到退出指令，准备退出应用...");
-      if (process.platform === "darwin") {
-        app.exit(0);
-      } else {
-        app.quit();
+    ipcMain.on("close-window", () => {
+      if (win) {
+        win.close(); // 关闭窗口
+
+        // 如果需要关闭窗口后直接退出应用（macOs特有处理）
+        if(process.platform === 'darwin') {  // 判断系统是否为macOS
+          app.quit(); // 退出整个应用 （包括Dock栏图标）
+        }
       }
     });
+
+    win.on('closed',() => {
+      win = null
+    })
   }
 
   app.whenReady().then(() => {
