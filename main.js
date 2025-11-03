@@ -29,7 +29,7 @@ if (!gotTheLock) {
 
     mainWindow.loadFile("index.html");
 
-    mainWindow.webContents.openDevTools(); // 打开主页面调试工具
+    // mainWindow.webContents.openDevTools(); // 打开主页面调试工具
 
     // 监听关闭窗口的指令
     ipcMain.on("close-window", () => {
