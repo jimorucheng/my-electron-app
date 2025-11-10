@@ -23,9 +23,10 @@
   <body>
     <!-- src="http://10.30.10.3:5174/orthopedic/home" -->
     <!-- src="https://test.cwdata.com/orthopedic/home" -->
+    <!-- src="https://shly-hkfy.cwdata.com/orthopedic/home" -->
     <webview
       id="myWebview"
-      src="https://shly-hkfy.cwdata.com/orthopedic/home"
+      src="https://test.cwdata.com/orthopedic/home"
       allowpopups
       style="background: #fff"
       partition="nopersist"
@@ -33,26 +34,29 @@
     ></webview>
 
     <script>
-        // 获取webview元素
-        const webview = document.querySelector('webview')
+      // 获取webview元素
+      const webview = document.querySelector("webview");
 
-        // 监听加载成功
-        webview.addEventListener('did-finish-load', () => {
-            console.log('H5页面加载完成');
-        });
+      // 监听加载成功
+      webview.addEventListener("did-finish-load", () => {
+        console.log("H5页面加载完成");
+      });
 
-        // 监听加载失败
-        webview.addEventListener('did-fail-load', (event, errorCode, errorDescription) => {
-            console.error('H5页面加载失败：', errorCode, errorDescription);
-        });
+      // 监听加载失败
+      webview.addEventListener(
+        "did-fail-load",
+        (event, errorCode, errorDescription) => {
+          console.error("H5页面加载失败：", errorCode, errorDescription);
+        }
+      );
 
-        // 监听来自H5页面的消息
-        webview.addEventListener('ipc-message', (event) => {
-            if (event.channel === 'close-app') {
-                // 转发消息给主进程关闭窗口
-                window.electronAPI.closeWindow()
-            }
-        })
+      // 监听来自H5页面的消息
+      webview.addEventListener("ipc-message", (event) => {
+        if (event.channel === "close-app") {
+          // 转发消息给主进程关闭窗口
+          window.electronAPI.closeWindow();
+        }
+      });
     </script>
   </body>
 </html>
