@@ -6,6 +6,9 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: write
+
 jobs:
   # build-macos:
   #   runs-on: macos-latest
@@ -95,4 +98,4 @@ jobs:
         with:
           files: dist/**/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # 使用你的 GitHub Token
+          GITHUB_TOKEN: ${{ github.token }}
