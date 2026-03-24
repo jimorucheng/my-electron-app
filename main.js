@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("path");
 
 // 将 HTTP 地址视为安全源，允许使用 getUserMedia
-app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://111.206.118.14');
+app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://111.206.118.14:30081');
 
 app.name = "院内矫形系统";
 
