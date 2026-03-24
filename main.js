@@ -1,5 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("path");
+
+// 将 HTTP 地址视为安全源，允许使用 getUserMedia
+app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://111.206.118.14');
 
 app.name = "院内矫形系统";
 
@@ -28,6 +31,27 @@ if (!gotTheLock) {
     });
 
     mainWindow.loadFile("index.html");
+
+    // 处理主窗口的媒体设备权限请求
+    mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+      const allowedPermissions = ['media', 'camera', 'microphone'];
+      if (allowedPermissions.includes(permission)) {
+        callback(true);
+      } else {
+        callback(false);
+      }
+    });
+
+    // 处理 webview（partition="nopersist"）的媒体设备权限请求
+    const webviewSession = session.fromPartition('nopersist');
+    webviewSession.setPermissionRequestHandler((webContents, permission, callback) => {
+      const allowedPermissions = ['media', 'camera', 'microphone'];
+      if (allowedPermissions.includes(permission)) {
+        callback(true); // 允许摄像头和麦克风权限
+      } else {
+        callback(false);
+      }
+    });
 
     // mainWindow.webContents.openDevTools(); // 打开主页面调试工具
 
