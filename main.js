@@ -4,7 +4,7 @@ const path = require("path");
 // 将 HTTP 地址视为安全源，允许使用 getUserMedia
 app.commandLine.appendSwitch(
   "unsafely-treat-insecure-origin-as-secure",
-  "http://111.206.118.14:30081",
+  "http://192.168.31.80",
 );
 
 app.name = "院内矫形系统";
