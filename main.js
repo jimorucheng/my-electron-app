@@ -1,10 +1,51 @@
 const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("path");
+const fs = require("fs");
+
+// 读取外部配置文件
+function loadConfig() {
+  let configPaths = [];
+
+  // 判断是开发环境还是生产环境
+  if (app.isPackaged) {
+    // 生产环境：按优先级查找配置文件
+    // 1. 应用可执行文件同级目录（最高优先级，方便部署时修改）
+    configPaths.push(path.join(path.dirname(app.getPath("exe")), "config.json"));
+    // 2. resources 目录（打包时自动复制）
+    configPaths.push(path.join(process.resourcesPath, "config.json"));
+  } else {
+    // 开发环境：配置文件在项目根目录
+    configPaths.push(path.join(__dirname, "config.json"));
+  }
+
+  for (const configPath of configPaths) {
+    try {
+      if (fs.existsSync(configPath)) {
+        const configData = fs.readFileSync(configPath, "utf-8");
+        console.log("加载配置文件:", configPath);
+        return JSON.parse(configData);
+      }
+    } catch (error) {
+      console.error("读取配置文件失败:", configPath, error.message);
+    }
+  }
+
+  // 没有找到配置文件，使用默认配置
+  console.error("未找到配置文件，使用默认配置");
+  return {
+    webviewUrl: "http://192.168.31.80/orthopedic/home",
+    insecureOrigin: "http://192.168.31.80",
+    xRayUploadUrl: "http://192.168.31.80/e-xray-upload/home",
+  };
+}
+
+// 加载配置
+const appConfig = loadConfig();
 
 // 将 HTTP 地址视为安全源，允许使用 getUserMedia
 app.commandLine.appendSwitch(
   "unsafely-treat-insecure-origin-as-secure",
-  "http://192.168.31.80",
+  appConfig.insecureOrigin,
 );
 
 app.name = "院内矫形系统";
@@ -26,7 +67,7 @@ if (!gotTheLock) {
       fullscreen: true,
       webPreferences: {
         // 注意：无需开启nodeIntegration和contextIsolation（更安全）
-        preload: path.join(__dirname, "preload.js"), // 新增preload脚本
+        preload: path.join(__dirname, "main-preload.js"), // 主窗口 preload
         nodeIntegration: false,
         contextIsolation: true,
         webviewTag: true,
@@ -34,6 +75,17 @@ if (!gotTheLock) {
     });
 
     mainWindow.loadFile("index.html");
+
+    // 加载完成后注入配置
+    mainWindow.webContents.on("did-finish-load", () => {
+      mainWindow.webContents.executeJavaScript(`
+        const webview = document.querySelector("webview");
+        if (webview && ${JSON.stringify(appConfig.webviewUrl)}) {
+          webview.src = "${appConfig.webviewUrl}";
+          console.log("webview src 已设置为:", "${appConfig.webviewUrl}");
+        }
+      `);
+    });
 
     // 处理主窗口的媒体设备权限请求
     mainWindow.webContents.session.setPermissionRequestHandler(
@@ -60,11 +112,16 @@ if (!gotTheLock) {
       },
     );
 
-    // mainWindow.webContents.openDevTools(); // 打开主页面调试工具
+    mainWindow.webContents.openDevTools(); // 打开主页面调试工具
 
     // 监听关闭窗口的指令
     ipcMain.on("close-window", () => {
       mainWindow.close();
+    });
+
+    // 返回配置给渲染进程
+    ipcMain.handle("get-config", () => {
+      return appConfig;
     });
 
     mainWindow.on("closed", () => {

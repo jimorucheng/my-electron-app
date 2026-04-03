@@ -1,10 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-// 配置变量
-const config = {
-    VITE_X_RAY_UPLOAD_URL: 'http://192.168.31.80/e-xray-upload/home'
-}
-
 // 向渲染进程暴露安全的API
 contextBridge.exposeInMainWorld('electronAPI', {
     send: (channel, data) => {
@@ -14,8 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
         }
     },
     closeWindow: () => ipcRenderer.send('close-window'),
-    // 获取配置变量
-    getConfig: (key) => config[key],
-    // 获取所有配置
-    getAllConfig: () => ({ ...config })
+    // 获取配置（从主进程读取外部配置文件）
+    getConfig: () => ipcRenderer.invoke('get-config')
 })

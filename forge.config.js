@@ -10,6 +10,8 @@ module.exports = {
     executableName: "ais-mechanical-orthopedic-desktop-app", // Linux/Windows 真正的二进制文件名
     icon: path.resolve(__dirname, "assets/icon"), // 👈 不要写扩展名！
     overwrite: true,
+    // 将 config.json 复制到应用外部 resources 目录
+    extraResource: [path.join(__dirname, "config.json")],
   },
   rebuildConfig: {},
   makers: [

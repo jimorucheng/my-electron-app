@@ -1,0 +1,5 @@
+{
+  "webviewUrl": "http://192.168.31.80/orthopedic/home",
+  "insecureOrigin": "http://192.168.31.80",
+  "xRayUploadUrl": "http://192.168.31.80/e-xray-upload/home"
+}

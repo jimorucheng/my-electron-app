@@ -21,13 +21,10 @@
     </style>
   </head>
   <body>
-    <!-- src="http://10.30.10.3:5174/orthopedic/home" -->
-    <!-- src="https://test.cwdata.com/orthopedic/home" -->
-    <!-- src="https://shly-hkfy.cwdata.com/orthopedic/home" -->
-    <!-- src="http://111.206.118.14:30081/orthopedic/home"   代理IP地址 -->
+    <!-- webview src 由外部配置文件动态设置 -->
     <webview
       id="myWebview"
-      src="http://192.168.31.80/orthopedic/home"
+      src="about:blank"
       allowpopups
       style="background: #fff"
       partition="nopersist"
@@ -36,15 +33,17 @@
 
     <script>
       // 获取webview元素
-      const webview = document.querySelector("webview");
+      const webViewElement = document.querySelector("webview");
+
+      // webview src 由主进程注入（从外部配置文件读取）
 
       // 监听加载成功
-      webview.addEventListener("did-finish-load", () => {
+      webViewElement.addEventListener("did-finish-load", () => {
         console.log("H5页面加载完成");
       });
 
       // 监听加载失败
-      webview.addEventListener(
+      webViewElement.addEventListener(
         "did-fail-load",
         (event, errorCode, errorDescription) => {
           console.error("H5页面加载失败：", errorCode, errorDescription);
@@ -52,7 +51,7 @@
       );
 
       // 监听来自H5页面的消息
-      webview.addEventListener("ipc-message", (event) => {
+      webViewElement.addEventListener("ipc-message", (event) => {
         if (event.channel === "close-app") {
           // 转发消息给主进程关闭窗口
           window.electronAPI.closeWindow();
