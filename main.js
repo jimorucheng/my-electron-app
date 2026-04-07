@@ -33,9 +33,9 @@ function loadConfig() {
   // 没有找到配置文件，使用默认配置
   console.error("未找到配置文件，使用默认配置");
   return {
-    webviewUrl: "http://192.168.31.80/orthopedic/home",
-    insecureOrigin: "http://192.168.31.80",
-    xRayUploadUrl: "http://192.168.31.80/e-xray-upload/home",
+    baseUrl: "http://192.168.31.80",
+    webViewUrlPath: "/orthopedic/home",
+    xRayUploadUrlPath: "/e-xray-upload/home",
   };
 }
 
@@ -45,7 +45,7 @@ const appConfig = loadConfig();
 // 将 HTTP 地址视为安全源，允许使用 getUserMedia
 app.commandLine.appendSwitch(
   "unsafely-treat-insecure-origin-as-secure",
-  appConfig.insecureOrigin,
+  appConfig.baseUrl,
 );
 
 app.name = "院内矫形系统";
@@ -78,11 +78,12 @@ if (!gotTheLock) {
 
     // 加载完成后注入配置
     mainWindow.webContents.on("did-finish-load", () => {
+      const webviewUrl = appConfig.baseUrl + appConfig.webViewUrlPath;
       mainWindow.webContents.executeJavaScript(`
         const webview = document.querySelector("webview");
-        if (webview && ${JSON.stringify(appConfig.webviewUrl)}) {
-          webview.src = "${appConfig.webviewUrl}";
-          console.log("webview src 已设置为:", "${appConfig.webviewUrl}");
+        if (webview && "${webviewUrl}") {
+          webview.src = "${webviewUrl}";
+          console.log("webview src 已设置为:", "${webviewUrl}");
         }
       `);
     });
@@ -119,7 +120,11 @@ if (!gotTheLock) {
 
     // 返回配置给渲染进程
     ipcMain.handle("get-config", () => {
-      return appConfig;
+      return {
+        ...appConfig,
+        webviewUrl: appConfig.baseUrl + appConfig.webViewUrlPath,
+        xRayUploadUrl: appConfig.baseUrl + appConfig.xRayUploadUrlPath,
+      };
     });
 
     mainWindow.on("closed", () => {
