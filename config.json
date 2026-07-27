@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://192.168.31.80",
+  "baseUrl": "http://10.30.10.80",
   "webViewUrlPath": "/orthopedic/home",
   "xRayUploadUrlPath": "/e-xray-upload/home"
 }
